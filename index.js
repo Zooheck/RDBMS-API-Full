@@ -28,6 +28,17 @@ server.get('/api/cohorts', async (req, res) => {
         res.status(500).json(error)
     }
 });
+
+server.get('/api/cohorts/:id', async (req, res) => {
+    try {
+        const cohort = await db('cohorts')
+        .where({id: req.params.id })
+        .first()
+        res.status(200).json(cohort)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+});
 server.listen(4000, () => {
     console.log('server listening on port 4000')
 })
