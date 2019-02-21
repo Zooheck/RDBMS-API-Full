@@ -39,6 +39,18 @@ server.get('/api/cohorts/:id', async (req, res) => {
         res.status(500).json(error)
     }
 });
+
+server.post('/api/cohorts', async (req, res) => {
+    try {
+        const [id] = await db('cohorts').insert(req.body);
+        const cohort = await db('cohorts')
+            .where({id})
+            .first()
+        res.status(201).json(cohort)
+    } catch (error) {
+        res.status(500).json(err)
+    }
+});
 server.listen(4000, () => {
     console.log('server listening on port 4000')
 })
