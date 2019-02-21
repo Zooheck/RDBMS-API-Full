@@ -28,6 +28,14 @@ server.get('/api/cohorts', async (req, res) => {
         res.status(500).json(error)
     }
 });
+server.get('/api/students', async (req, res) => {
+    try {
+        const students = await db('students');
+        res.status(200).json(students);
+    } catch (error) {
+        res.status(500).json(error)
+    }
+});
 
 server.get('/api/cohorts/:id', async (req, res) => {
     try {
@@ -39,6 +47,20 @@ server.get('/api/cohorts/:id', async (req, res) => {
         res.status(500).json(error)
     }
 });
+
+server.get('/api/cohorts/:id/students', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const students = await db('cohorts')
+            .select('cohorts.id', 'cohorts.name as cohortName', 'students.name', 'students.cohort_id')
+            .join('students', {'students.cohort_id': 'cohorts.id'})
+            .where('students.cohort_id', '=', id)
+        res.status(200).json(students)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+});
+
 
 server.post('/api/cohorts', async (req, res) => {
     try {

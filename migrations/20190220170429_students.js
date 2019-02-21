@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
   
         tbl.string('name', 128).notNullable().unique();
         
-        tbl.integer('cohort_id').unsigned().references('id').inTable('cohorts')
+        tbl.integer('cohort_id').unsigned().notNullable().references('id').inTable('cohorts')
 
 
         tbl.timestamps(true, true)
