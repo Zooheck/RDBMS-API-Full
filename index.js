@@ -63,10 +63,25 @@ server.put('/api/cohorts/:id', async (req, res) => {
                 .first()
             res.status(200).json(cohort)
         } else {
-            res.status(404).json({message: 'Zoo not found'})
+            res.status(404).json({message: 'Cohort not found'})
           }
     } catch (error) {
         res.status(500).json(err)
+    }
+});
+
+server.delete('/api/cohorts/:id', async (req, res) => {
+    try {
+        const count = await db('cohorts')
+            .where({ id: req.params.id })
+            .del()
+        if (count > 0) {
+            res.status(204).end()
+        } else {
+            res.status(404).json({message: 'Cohort not found'})
+          }
+    } catch (error) {
+        res.status(500).json(error)
     }
 });
 server.listen(4000, () => {
